@@ -19,7 +19,7 @@ makeMove (x,y) South d  = (x, y - d)
 makeMove (x,y) West  d  = (x - d, y)
 
 loggedMove :: Coords -> Direction -> Integer -> [Coords]
-loggedMove _ _ (-1) = []
+loggedMove c _ 0    = [c]
 loggedMove c d n    = [c] ++ (loggedMove c1 d (n-1))
     where c1 = makeMove c d 1
 
