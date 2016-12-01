@@ -18,3 +18,7 @@ That's my plan for now but it may change in the future.
 ### Why Haskell?
 I always liked the idea of functional programming, and Haskell seems a good choice, although Scala might be closer to
 me because of the JVM.
+
+---
+It's obvious but just to be sure: *The code contains spoilers*
+![River Song Spoiler alert](https://s-media-cache-ak0.pinimg.com/originals/a8/b6/d5/a8b6d5b4fb4d574bec6388efd7900629.jpg)
