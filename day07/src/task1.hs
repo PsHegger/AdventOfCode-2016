@@ -11,8 +11,8 @@ isABBASupported' (s:ls) bc af
     | notationFound && bc > 0   = False
     | otherwise                 = isABBASupported' ls bc (notationFound || af)
     where
-        next4 = (s:(take 3 ls))
-        notationFound = isABBANotation next4
+        next4           = (s:(take 3 ls))
+        notationFound   = isABBANotation next4
 
 isABBASupported :: String -> Bool
 isABBASupported s = isABBASupported' s 0 False
