@@ -1,4 +1,4 @@
-module Aoc.Day8.Types (Command (..), PixelMatrix (..), applyCommands) where
+module Aoc.Day8.Types (Command (..), PixelMatrix (..), applyCommands, printMatrix) where
 
 data Command = Rect Integer Integer
              | RowRotate Integer Integer
@@ -55,3 +55,15 @@ applyCommands m (c:cs)  = applyCommands nextM cs
             Rect w h        -> turnOnRect m w h
             RowRotate ry a  -> rotateRow m ry a
             ColRotate rx a  -> rotateCol m rx a
+
+printMatrixRow :: PixelMatrix -> Integer -> String
+printMatrixRow (PixelMatrix w h state) y = map mapper [0..w-1]
+    where
+        mapper i = if ((i, y) :: PixelCoord) `elem` state
+            then '#'
+            else ' '
+
+printMatrix :: PixelMatrix -> String
+printMatrix m = unlines rows
+    where
+        rows = map (\y -> printMatrixRow m y) [0..(pixelMatrixHeight m)-1]
