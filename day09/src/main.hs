@@ -1,40 +1,26 @@
 import System.Environment
 import Data.List.Split (wordsBy)
-import Data.List (intercalate)
 
-decompress :: String -> String
-decompress ""       = ""
-decompress ('(':ls) = current ++ (decompress next)
+decompressedLength :: String -> Bool -> Int
+decompressedLength " "      _       = 0
+decompressedLength "\n"     _       = 0
+decompressedLength ""       _       = 0
+decompressedLength ('(':ls) rec     = (n * currentLength) + (decompressedLength next rec)
     where
-        marker      = takeWhile (/=')') ls
-        splitMarker = wordsBy (=='x') marker
-        c           = (read (splitMarker !! 0)) :: Int
-        n           = (read (splitMarker !! 1)) :: Int
-        remaining   = drop (length marker + 1) ls
-        code        = take c remaining
-        current     = intercalate "" (replicate n code)
-        next        = drop c remaining
-decompress (l:ls)   = [l] ++ (decompress ls)
-
-decompressedLength :: String -> Int
-decompressedLength " "      = 0
-decompressedLength "\n"     = 0
-decompressedLength ""       = 0
-decompressedLength ('(':ls) = (n * (decompressedLength current)) + (decompressedLength next)
-    where
-        marker      = takeWhile (/=')') ls
-        splitMarker = wordsBy (=='x') marker
-        c           = (read (splitMarker !! 0)) :: Int
-        n           = (read (splitMarker !! 1)) :: Int
-        remaining   = drop (length marker + 1) ls
-        current     = take c remaining
-        next        = drop c remaining
-decompressedLength (l:ls) = 1 + (decompressedLength ls)
+        marker          = takeWhile (/=')') ls
+        splitMarker     = wordsBy (=='x') marker
+        c               = (read (splitMarker !! 0)) :: Int
+        n               = (read (splitMarker !! 1)) :: Int
+        remaining       = drop (length marker + 1) ls
+        (current, next) = splitAt c remaining
+        currentLength   = if rec
+            then decompressedLength current rec
+            else length current
+decompressedLength (l:ls) rec       = 1 + (decompressedLength ls rec)
 
 solve :: String -> Integer -> Int
-solve s 1 = length solution
-    where solution = filter (\x -> x /= ' ' && x /= '\n') (decompress s)
-solve s 2 = decompressedLength s
+solve s 1 = decompressedLength s False
+solve s 2 = decompressedLength s True
 solve _ _ = error "Unsupported task number"
 
 main = do
